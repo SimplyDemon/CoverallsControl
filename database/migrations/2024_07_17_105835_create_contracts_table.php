@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->string('number');
+            $table->string('number')->unique();
             $table->timestamp('date_conclusion');
             $table->timestamp('date_delivery_documental');
             $table->timestamp('date_delivery_actual');

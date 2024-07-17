@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name_first', 50);
             $table->string('name_last', 50);
             $table->string('name_middle', 50)->nullable();
-            $table->string('certificate_id');
+            $table->string('certificate_id')->unique();
             $table->integer('position_id');
             $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
             $table->timestamp('date_of_birth');
