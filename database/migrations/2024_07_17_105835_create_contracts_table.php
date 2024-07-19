@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('number')->unique();
             $table->timestamp('date_conclusion');
             $table->timestamp('date_delivery_documental');
-            $table->timestamp('date_delivery_actual');
+            $table->timestamp('date_delivery_actual')->nullable();
             $table->string('file');
             $table->enum('status', ['canceled', 'active', 'draft'])->default('active');
             $table->timestamps();

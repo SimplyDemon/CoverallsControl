@@ -53,7 +53,7 @@
                 <label for="date_of_birth">
                     Дата рождения
                 </label>
-                <input type="date" id="date_of_birth" name="date_of_birth">
+                <input type="date" id="date_of_birth" name="date_of_birth" value="{{old('date_of_birth', '')}}">
             </div>
 
             <div class="form-group">
