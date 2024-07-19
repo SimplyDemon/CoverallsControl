@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->integer('size_head');
             $table->integer('size_body');
             $table->integer('size_foot');
+            $table->integer('height');
             $table->enum('status', ['active', 'inactive', 'fired',])->default('active');
             $table->string('img');
             $table->integer('division_id');

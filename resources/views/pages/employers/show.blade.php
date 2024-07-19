@@ -38,26 +38,29 @@
         <div>
             address_actual {{ $single->address_actual }}
         </div>
-        <div>
-            size_head {{ $single->size_head }}
-        </div>
-        <div>
-            size_body {{ $single->size_body }}
-        </div>
-        <div>
-            size_foot {{ $single->size_foot }}
-        </div>
-        <div>
-            status {{ $single->status }}
-        </div>
-        <div>
-            Изображение: <img src="{{asset('storage/' . $single->img)}}" width="100" height="100" alt="img">
-        </div>
-        <div>
-            division_id {{ $single->division_id }}
-        </div>
+            <div>
+                size_head {{ $single->size_head }}
+            </div>
+            <div>
+                size_body {{ $single->size_body }}
+            </div>
+            <div>
+                size_foot {{ $single->size_foot }}
+            </div>
+            <div>
+                height {{ $single->height }}
+            </div>
+            <div>
+                status {{ $single->status }}
+            </div>
+            <div>
+                Изображение: <img src="{{asset('storage/' . $single->img)}}" width="100" height="100" alt="img">
+            </div>
+            <div>
+                division_id {{ $single->division_id }}
+            </div>
 
-        @if(session('message'))
+            @if(session('message'))
             <div>
                 {{ session('message') }}
             </div>

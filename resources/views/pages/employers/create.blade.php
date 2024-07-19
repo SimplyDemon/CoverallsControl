@@ -98,6 +98,13 @@
                        value="{{old('size_foot','')}}">
             </div>
             <div class="form-group">
+                <label for="height">
+                    Высота
+                </label>
+                <input class="form-control" type="number" name="height" id="height"
+                       value="{{old('height','')}}">
+            </div>
+            <div class="form-group">
                 <label for="division_id">
                     Подразделение
                 </label>
