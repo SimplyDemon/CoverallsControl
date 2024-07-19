@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Division;
+use App\Models\Position;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class DivisionController extends Controller
+class PositionController extends Controller
 {
-    protected string $routeName = 'divisions.';
-    protected string $frontPath = 'pages.divisions.';
+    protected string $routeName = 'positions.';
+    protected string $frontPath = 'pages.positions.';
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $all = Division::orderBy('name', 'desc')->get();
+        $all = Position::orderBy('name', 'desc')->get();
         $buttonUrlAddNew = route($this->routeName . 'create');
 
         return view($this->frontPath . 'index', [
             'all' => $all,
-            'title' => 'Подразделения',
+            'title' => 'Должности',
             'buttonUrlAddNew' => $buttonUrlAddNew,
         ]);
     }
@@ -43,9 +43,8 @@ class DivisionController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
-            $single = Division::create($request->all());
+            $single = Position::create($request->all());
             $messageText = $single->name . ' Добавлено успешно';
             $messageLink = route($this->routeName . 'show', $single);
         } catch (QueryException $exception) {
@@ -62,13 +61,13 @@ class DivisionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Division $division)
+    public function show(Position $position)
     {
-        $urlEdit = route($this->routeName . 'edit', $division);
-        $formActionDestroy = route($this->routeName . 'destroy', $division);
+        $urlEdit = route($this->routeName . 'edit', $position);
+        $formActionDestroy = route($this->routeName . 'destroy', $position);
 
         return view($this->frontPath . 'show', [
-            'single' => $division,
+            'single' => $position,
             'urlEdit' => $urlEdit,
             'formActionDestroy' => $formActionDestroy,
         ]);
@@ -77,12 +76,12 @@ class DivisionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Division $division)
+    public function edit(Position $position)
     {
-        $formActionUpdate = route($this->routeName . 'update', $division);
+        $formActionUpdate = route($this->routeName . 'update', $position);
 
         return view($this->frontPath . 'edit', [
-            'single' => $division,
+            'single' => $position,
             'formActionUpdate' => $formActionUpdate,
         ]);
     }
@@ -90,16 +89,16 @@ class DivisionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Division $division)
+    public function update(Request $request, Position $position)
     {
         try {
-            $division->update($request->all());
+            $position->update($request->all());
             $message = 'Обновление выполнено успешно!';
         } catch (QueryException $exception) {
             $error = $exception->getMessage();
         }
 
-        return redirect()->route($this->routeName . 'show', $division)->with([
+        return redirect()->route($this->routeName . 'show', $position)->with([
             'error' => $error ?? null,
             'message' => $message ?? null,
         ]);
@@ -108,10 +107,10 @@ class DivisionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Division $division)
+    public function destroy(Position $position)
     {
         try {
-            $division->delete();
+            $position->delete();
             $message = 'Удаление выполнено успешно!';
         } catch (QueryException $exception) {
             $message = $exception->getMessage();
