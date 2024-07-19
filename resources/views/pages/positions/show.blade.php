@@ -4,7 +4,11 @@
         <h1>
             {{ $single->name }}
         </h1>
-
+        @if(session('error'))
+            <div>
+                {{ session('error') }}
+            </div>
+        @endif
         @if(session('message'))
             <div>
                 {{ session('message') }}

@@ -15,7 +15,7 @@
 
                 @foreach($all as $single)
                     <div class="">
-                        <a href="{{ route( 'divisions.show', $single ) }}">
+                        <a href="{{ route( 'positions.show', $single ) }}">
                             {{$single->name}}
                         </a>
                     </div>
