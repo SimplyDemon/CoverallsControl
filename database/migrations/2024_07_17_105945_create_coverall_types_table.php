@@ -14,9 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('img');
-            $table->enum('type', ['gloves', 'boots', 'helmet', 'robe']);
+            $table->enum('type', ['gloves', 'boots', 'helmet', 'robe', 'other']);
             $table->integer('term_life'); // In month
-            $table->string('nomenclature');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
