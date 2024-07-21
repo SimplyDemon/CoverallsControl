@@ -30,8 +30,8 @@
                 </label>
                 <select name="type" id="type">
                     @foreach($types as $typeKey => $typeValue)
-                        <option value="{{$typeValue}}" {{$typeValue === $single->type ? 'selected' : ''}}>
-                            {{$typeKey}}
+                        <option value="{{$typeKey}}" {{$typeKey === $single->type ? 'selected' : ''}}>
+                            {{$typeValue}}
                         </option>
                     @endforeach
                 </select>

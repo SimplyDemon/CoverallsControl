@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
+use App\Models\Coverall;
 use App\Models\CoverallType;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CoverallTypeController extends Controller
+class CoverallController extends Controller
 {
-    protected string $routeName = 'coverall_types.';
-    protected string $frontPath = 'pages.coverall_types.';
-    protected array $types = [
-        'gloves' => 'перчатки',
-        'boots' => 'ботинки',
-        'helmet' => 'головной убор',
-        'robe' => 'верхняя одежа',
-        'other' => 'другое',
+    protected string $routeName = 'coveralls.';
+    protected string $frontPath = 'pages.coveralls.';
+    protected array $statuses = [
+        'in_stock' => 'в наличии',
+        'issued' => 'выдан',
+        'defective' => 'брак',
+        'returned' => 'возвращён',
+        'ready_for_disposal' => 'готов к утилизации',
+        'disposed' => 'утилизирован',
     ];
 
     /**
@@ -25,12 +27,12 @@ class CoverallTypeController extends Controller
      */
     public function index()
     {
-        $all = CoverallType::orderBy('name', 'desc')->get();
+        $all = Coverall::orderBy('name', 'desc')->get();
         $buttonUrlAddNew = route($this->routeName . 'create');
 
         return view($this->frontPath . 'index', [
             'all' => $all,
-            'title' => 'Виды спецовок',
+            'title' => 'Спецодежда',
             'buttonUrlAddNew' => $buttonUrlAddNew,
         ]);
     }
@@ -40,12 +42,15 @@ class CoverallTypeController extends Controller
      */
     public function create()
     {
+        $coverallTypes = CoverallType::orderBy('name', 'asc')->get();
+        $contracts = Contract::orderBy('name', 'asc')->get();
         $formActionCreate = route($this->routeName . 'store');
-
 
         return view($this->frontPath . 'create', [
             'formActionCreate' => $formActionCreate,
-            'types' => $this->types,
+            'coverallTypes' => $coverallTypes,
+            'contracts' => $contracts,
+            'statuses' => $this->statuses,
         ]);
     }
 
@@ -54,18 +59,8 @@ class CoverallTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $img = $request->file('image');
-
-        if ($img) {
-            $postfixFolder = date('Y/m/d');
-            $imgName = time() . '-' . Str::slug(pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME), '-') . '.' . $img->getClientOriginalExtension();
-            $imgPath = $img->storeAs('uploads/coverall-types/' . $postfixFolder, $imgName, 'public');
-
-            $request->merge(['img' => $imgPath]);
-        }
-
         try {
-            $single = CoverallType::create($request->all());
+            $single = Coverall::create($request->except('image'));
             $messageText = $single->name . ' Добавлено успешно';
             $messageLink = route($this->routeName . 'show', $single);
         } catch (QueryException $exception) {
@@ -82,13 +77,13 @@ class CoverallTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CoverallType $coverallType)
+    public function show(Coverall $coverall)
     {
-        $urlEdit = route($this->routeName . 'edit', $coverallType);
-        $formActionDestroy = route($this->routeName . 'destroy', $coverallType);
+        $urlEdit = route($this->routeName . 'edit', $coverall);
+        $formActionDestroy = route($this->routeName . 'destroy', $coverall);
 
         return view($this->frontPath . 'show', [
-            'single' => $coverallType,
+            'single' => $coverall,
             'urlEdit' => $urlEdit,
             'formActionDestroy' => $formActionDestroy,
         ]);
@@ -97,30 +92,35 @@ class CoverallTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CoverallType $coverallType)
+    public function edit(Coverall $coverall)
     {
-        $formActionUpdate = route($this->routeName . 'update', $coverallType);
+        $formActionUpdate = route($this->routeName . 'update', $coverall);
+        $coverallTypes = CoverallType::orderBy('name', 'asc')->get();
+        $contracts = Contract::orderBy('name', 'asc')->get();
 
         return view($this->frontPath . 'edit', [
-            'single' => $coverallType,
+            'single' => $coverall,
             'formActionUpdate' => $formActionUpdate,
-            'types' => $this->types,
+            'coverallTypes' => $coverallTypes,
+            'contracts' => $contracts,
+            'statuses' => $this->statuses,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CoverallType $coverallType)
+    public function update(Request $request, Coverall $coverall)
     {
+
         try {
-            $coverallType->update($request->all());
+            $coverall->update($request->all());
             $message = 'Обновление выполнено успешно!';
         } catch (QueryException $exception) {
             $error = $exception->getMessage();
         }
 
-        return redirect()->route($this->routeName . 'show', $coverallType)->with([
+        return redirect()->route($this->routeName . 'show', $coverall)->with([
             'error' => $error ?? null,
             'message' => $message ?? null,
         ]);
@@ -129,10 +129,10 @@ class CoverallTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CoverallType $coverallType)
+    public function destroy(Coverall $coverall)
     {
         try {
-            $coverallType->delete();
+            $coverall->delete();
             $message = 'Удаление выполнено успешно!';
         } catch (QueryException $exception) {
             $message = $exception->getMessage();

@@ -32,8 +32,8 @@
                 </label>
                 <select name="type" id="type">
                     @foreach($types as $typeKey => $typeValue)
-                        <option value="{{$typeValue}}">
-                            {{$typeKey}}
+                        <option value="{{$typeKey}}">
+                            {{$typeValue}}
                         </option>
                     @endforeach
                 </select>

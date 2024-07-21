@@ -20,7 +20,6 @@ class CoverallType extends Model
             'robe' => 'верхняя одежа',
             'other' => 'другое'
         };
-
     }
 
 }

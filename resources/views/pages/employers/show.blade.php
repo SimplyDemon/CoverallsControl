@@ -29,15 +29,15 @@
         <div>
             date_of_birth {{ $single->date_of_birth }}
         </div>
-        <div>
-            phone {{ $single->phone }}
-        </div>
-        <div>
-            address_documental {{ $single->address_documental }}
-        </div>
-        <div>
-            address_actual {{ $single->address_actual }}
-        </div>
+            <div>
+                phone {{ $single->phone }}
+            </div>
+            <div>
+                address_documental {{ $single->address_documental }}
+            </div>
+            <div>
+                address_actual {{ $single->address_actual }}
+            </div>
             <div>
                 size_head {{ $single->size_head }}
             </div>
@@ -60,21 +60,15 @@
                 division_id {{ $single->division_id }}
             </div>
 
-            @if(session('message'))
-            <div>
-                {{ session('message') }}
-            </div>
-        @endif
-
-        <a href="{{$urlEdit}}">
-            Редактировать
-        </a>
-        <form method="POST" action="{{ $formActionDestroy }}">
-            @csrf
-            @method('DELETE')
-            <button class="btn btn-primary">
-                Удалить
-            </button>
+            <a href="{{$urlEdit}}">
+                Редактировать
+            </a>
+            <form method="POST" action="{{ $formActionDestroy }}">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-primary">
+                    Удалить
+                </button>
         </form>
     </main>
 @endsection

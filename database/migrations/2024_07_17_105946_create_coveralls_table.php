@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreign('coverall_type_id')->references('id')->on('coverall_types')->onDelete('cascade');
             $table->integer('size');
             $table->enum('status', ['defective', 'issued', 'in_stock', 'returned', 'ready_for_disposal', 'disposed']);
-            $table->timestamp('date_issuance');
+            $table->timestamp('date_issuance')->nullable();
             $table->timestamp('date_replacement')->nullable();
             $table->integer('contract_id');
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
