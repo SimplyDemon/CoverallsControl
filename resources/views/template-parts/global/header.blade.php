@@ -15,14 +15,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-<div class="min-h-screen bg-gray-100">
-    @include('layouts.navigation')
 
-    <!-- Page Heading -->
-    @isset($header)
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
-@endisset
+<div>
+    <ul>
+        <li><a href="{{route('divisions.index')}}">Подразделения</a></li>
+        <li><a href="{{route('coverall_types.index')}}">Виды спецовок</a></li>
+        <li><a href="{{route('positions.index')}}">Должность</a></li>
+        <li><a href="{{route('employers.index')}}">Работники</a></li>
+        <li><a href="{{route('contracts.index')}}">Контракты</a></li>
+        <li><a href="{{route('coveralls.index')}}">Спецовки</a></li>
+    </ul>
+</div>

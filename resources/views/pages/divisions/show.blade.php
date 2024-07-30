@@ -10,6 +10,9 @@
                 {{ session('message') }}
             </div>
         @endif
+        <div>
+            Родительское подразделение: {{$single->division->name}}
+        </div>
 
         <a href="{{$urlEdit}}">
             Редактировать

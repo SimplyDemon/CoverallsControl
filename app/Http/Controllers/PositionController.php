@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CoverallType;
 use App\Models\Position;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {
@@ -32,9 +34,11 @@ class PositionController extends Controller
     public function create()
     {
         $formActionCreate = route($this->routeName . 'store');
+        $coverallTypes = CoverallType::orderBy('name', 'desc')->get();
 
         return view($this->frontPath . 'create', [
             'formActionCreate' => $formActionCreate,
+            'coverallTypes' => $coverallTypes,
         ]);
     }
 
@@ -43,11 +47,25 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
+        $coverallTypesIds = $request->input('coverall_types_ids');
+        $quantities = $request->input('quantities');
+
         try {
-            $single = Position::create($request->all());
+            $single = Position::create($request->only('name'));
             $messageText = $single->name . ' Добавлено успешно';
             $messageLink = route($this->routeName . 'show', $single);
+
+            if (!empty($coverallTypesIds)) {
+                $i = 0;
+                foreach ($coverallTypesIds as $coverallTypesId) {
+                    $single->coverallTypes()->attach($coverallTypesId, ['quantity' => $quantities[$i++]]);
+                }
+            }
+
         } catch (QueryException $exception) {
+            if (isset($single)) {
+                $single->delete();
+            }
             $error = $exception->getMessage();
         }
 
@@ -79,10 +97,12 @@ class PositionController extends Controller
     public function edit(Position $position)
     {
         $formActionUpdate = route($this->routeName . 'update', $position);
+        $coverallTypes = CoverallType::orderBy('name', 'desc')->get();
 
         return view($this->frontPath . 'edit', [
             'single' => $position,
             'formActionUpdate' => $formActionUpdate,
+            'coverallTypes' => $coverallTypes,
         ]);
     }
 
@@ -91,11 +111,26 @@ class PositionController extends Controller
      */
     public function update(Request $request, Position $position)
     {
+        $coverallTypesIds = $request->input('coverall_types_ids');
+        $quantities = $request->input('quantities');
+
         try {
             $position->update($request->all());
             $message = 'Обновление выполнено успешно!';
         } catch (QueryException $exception) {
             $error = $exception->getMessage();
+        }
+
+        /* Delete all coverall types values and write again it's much better than make 1000 checks */
+        DB::table('coverall_type_position')->where([
+            ['position_id', '=', $position->id],
+        ])->delete();
+
+        if (!empty($coverallTypesIds)) {
+            $i = 0;
+            foreach ($coverallTypesIds as $coverallTypesId) {
+                $position->coverallTypes()->attach($coverallTypesId, ['quantity' => $quantities[$i++]]);
+            }
         }
 
         return redirect()->route($this->routeName . 'show', $position)->with([

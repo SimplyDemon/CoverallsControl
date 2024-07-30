@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('coverall_type_position', function (Blueprint $table) {
-            $table->bigInteger('coverall_type_id')->unsigned();
-            $table->bigInteger('position_id')->unsigned();
-            $table->foreign('coverall_type_id')->references('id')->on('coverall_types')->onDelete('cascade');
-            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\CoverallType::class)->constrained();
+            $table->foreignIdFor(\App\Models\Position::class)->constrained();
+            $table->integer('quantity')->default(1);
+            $table->primary(['position_id', 'coverall_type_id']);
         });
     }
 

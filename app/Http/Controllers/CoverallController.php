@@ -27,7 +27,7 @@ class CoverallController extends Controller
      */
     public function index()
     {
-        $all = Coverall::orderBy('name', 'desc')->get();
+        $all = Coverall::orderBy('id', 'desc')->get();
         $buttonUrlAddNew = route($this->routeName . 'create');
 
         return view($this->frontPath . 'index', [
@@ -42,8 +42,8 @@ class CoverallController extends Controller
      */
     public function create()
     {
-        $coverallTypes = CoverallType::orderBy('name', 'asc')->get();
-        $contracts = Contract::orderBy('name', 'asc')->get();
+        $coverallTypes = CoverallType::orderBy('id', 'asc')->get();
+        $contracts = Contract::orderBy('id', 'asc')->get();
         $formActionCreate = route($this->routeName . 'store');
 
         return view($this->frontPath . 'create', [
@@ -96,7 +96,7 @@ class CoverallController extends Controller
     {
         $formActionUpdate = route($this->routeName . 'update', $coverall);
         $coverallTypes = CoverallType::orderBy('name', 'asc')->get();
-        $contracts = Contract::orderBy('name', 'asc')->get();
+        $contracts = Contract::orderBy('id', 'asc')->get();
 
         return view($this->frontPath . 'edit', [
             'single' => $coverall,

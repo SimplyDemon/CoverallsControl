@@ -15,6 +15,17 @@
             </div>
         @endif
 
+        @if($single->coverallTypes)
+            <div>
+                <h4>Список нужной спецовки</h4>
+                @foreach($single->coverallTypes as $coverallType)
+                    <div>
+                        {{$coverallType->name}} x{{$coverallType->pivot->quantity}}
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <a href="{{$urlEdit}}">
             Редактировать
         </a>

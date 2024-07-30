@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Coverall extends Model
 {
@@ -11,7 +12,17 @@ class Coverall extends Model
 
     use HasFactory;
 
-    public function getStatusReadableAttribute()
+    public function coverallType(): BelongsTo
+    {
+        return $this->belongsTo(CoverallType::class);
+    }
+
+    public function employer(): BelongsTo
+    {
+        return $this->belongsTo(Employer::class);
+    }
+
+    public function getStatusReadableAttribute(): string
     {
         return match ($this->status) {
             'in_stock' => 'в наличии',

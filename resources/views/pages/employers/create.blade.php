@@ -98,8 +98,22 @@
                        value="{{old('size_foot','')}}">
             </div>
             <div class="form-group">
+                <label for="size_face">
+                    Размер лица
+                </label>
+                <input class="form-control" type="number" name="size_face" id="size_face"
+                       value="{{old('size_face','')}}">
+            </div>
+            <div class="form-group">
+                <label for="size_gloves">
+                    Размер перчаток
+                </label>
+                <input class="form-control" type="number" name="size_gloves" id="size_gloves"
+                       value="{{old('size_gloves','')}}">
+            </div>
+            <div class="form-group">
                 <label for="height">
-                    Высота
+                    Рост
                 </label>
                 <input class="form-control" type="number" name="height" id="height"
                        value="{{old('height','')}}">

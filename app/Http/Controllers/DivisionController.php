@@ -32,9 +32,11 @@ class DivisionController extends Controller
     public function create()
     {
         $formActionCreate = route($this->routeName . 'store');
+        $divisions = Division::orderBy('name', 'desc')->get();
 
         return view($this->frontPath . 'create', [
             'formActionCreate' => $formActionCreate,
+            'divisions' => $divisions,
         ]);
     }
 
@@ -80,10 +82,12 @@ class DivisionController extends Controller
     public function edit(Division $division)
     {
         $formActionUpdate = route($this->routeName . 'update', $division);
+        $divisions = Division::orderBy('name', 'desc')->get();
 
         return view($this->frontPath . 'edit', [
             'single' => $division,
             'formActionUpdate' => $formActionUpdate,
+            'divisions' => $divisions,
         ]);
     }
 

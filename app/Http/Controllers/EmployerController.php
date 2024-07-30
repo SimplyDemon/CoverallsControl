@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coverall;
+use App\Models\CoverallType;
 use App\Models\Division;
 use App\Models\Employer;
 use App\Models\Position;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -19,7 +22,7 @@ class EmployerController extends Controller
      */
     public function index()
     {
-        $all = Employer::orderBy('name', 'desc')->get();
+        $all = Employer::orderBy('id', 'desc')->get();
         $buttonUrlAddNew = route($this->routeName . 'create');
 
         return view($this->frontPath . 'index', [
@@ -52,12 +55,10 @@ class EmployerController extends Controller
     {
         $img = $request->file('image');
 
-
         if ($img) {
             $postfixFolder = date('Y/m/d');
             $imgName = time() . '-' . Str::slug(pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME), '-') . '.' . $img->getClientOriginalExtension();
             $imgPath = $img->storeAs('uploads/employers/' . $postfixFolder, $imgName, 'public');
-
 
             $request->merge(['img' => $imgPath]);
         }
@@ -100,21 +101,57 @@ class EmployerController extends Controller
         $formActionUpdate = route($this->routeName . 'update', $employer);
         $divisions = Division::orderBy('name', 'asc')->get();
         $positions = Position::orderBy('name', 'asc')->get();
+        $employerRequiredCoverallTypes = $employer->position->coverallTypes;
+        $coverallsInStock = [];
+        $employerAvailableCoveralls = [];
+
+        if ($employerRequiredCoverallTypes) {
+            foreach ($employerRequiredCoverallTypes as $coverallType) {
+                $coverall = Coverall::where([
+                    ['coverall_type_id', $coverallType->id,],
+                    ['status', 'in_stock'],
+                    ['employer_id', null],
+                ]);
+                $employerBaseSizeName = $coverallType->employerBaseSizeName;
+                $coverallSize = $employer->$employerBaseSizeName;
+
+                if ($coverallSize) {
+                    $coverall = $coverall->where([
+                        ['size', $employer->$employerBaseSizeName,],
+                    ]);
+                }
+                $coverallCount = $coverall->count();
+
+                if ($coverallCount > 0) {
+                    $coverall = $coverall->groupBy('coverall_type_id');
+                    $coverall = $coverall->firstOrFail();
+
+                    $employerAvailableCoveralls[] = [
+                        'coverall' => $coverall,
+                        'coverallCount' => $coverallCount,
+                    ];
+                }
+            }
+        }
 
         return view($this->frontPath . 'edit', [
             'single' => $employer,
             'formActionUpdate' => $formActionUpdate,
             'divisions' => $divisions,
             'positions' => $positions,
+            'employerAvailableCoveralls' => $employerAvailableCoveralls,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws Exception
      */
     public function update(Request $request, Employer $employer)
     {
         $img = $request->file('image');
+        $coverallTypesIds = $request->input('coverall_types_ids');
+        $coverallCounts = $request->input('coverall_counts');
 
         if ($img) {
             $imgName = time() . '-' . Str::slug(pathinfo($img->getClientOriginalName(), PATHINFO_FILENAME), '-') . '.' . $img->getClientOriginalExtension();
@@ -124,7 +161,47 @@ class EmployerController extends Controller
         }
 
         try {
-            $employer->update($request->except('image'));
+            $employer->update($request->except([
+                'image',
+                'coverall_types_ids',
+                'coverall_counts',
+            ]));
+
+            /*  */
+            if (!empty($coverallTypesIds)) {
+                $i = 0;
+                $coverallsForAttach = collect();
+                foreach ($coverallTypesIds as $coverallTypesId) {
+                    $coverall = Coverall::where([
+                        ['coverall_type_id', $coverallTypesId,],
+                        ['status', 'in_stock'],
+                        ['employer_id', null],
+                    ]);
+                    $coverallType = CoverallType::findOrFail($coverallTypesId);
+                    $employerBaseSizeName = $coverallType->employerBaseSizeName;
+                    $coverallSize = $employer->$employerBaseSizeName;
+                    if ($coverallSize) {
+                        $coverall = $coverall->where([
+                            ['size', $employer->$employerBaseSizeName,],
+                        ]);
+                    }
+
+                    $coverall = $coverall->take($coverallCounts[$i])->get();
+                    $coverallCount = $coverall->count();
+
+                    if ((int)$coverallCounts[$i++] !== $coverallCount) {
+                        throw new Exception('Неверное количество спецовок, попробуйте ещё раз.');
+                    }
+                    $coverallsForAttach = $coverallsForAttach->concat($coverall);
+
+                }
+
+                if (!empty($coverallsForAttach)) {
+                    $employer->coveralls()->saveMany($coverallsForAttach);
+                    $coverallsForAttach->update([]);
+                }
+            }
+
             $message = 'Обновление выполнено успешно!';
         } catch (QueryException $exception) {
             $error = $exception->getMessage();

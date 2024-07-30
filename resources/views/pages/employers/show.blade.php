@@ -20,15 +20,15 @@
         <div>
             name_middle {{ $single->name_middle }}
         </div>
-        <div>
-            certificate_id {{ $single->certificate_id }}
-        </div>
-        <div>
-            position_id {{ $single->position_id }}
-        </div>
-        <div>
-            date_of_birth {{ $single->date_of_birth }}
-        </div>
+            <div>
+                certificate_id {{ $single->certificate_id }}
+            </div>
+            <div>
+                position_id {{ $single->position_id }}
+            </div>
+            <div>
+                date_of_birth {{ $single->date_of_birth }}
+            </div>
             <div>
                 phone {{ $single->phone }}
             </div>
@@ -46,6 +46,12 @@
             </div>
             <div>
                 size_foot {{ $single->size_foot }}
+            </div>
+            <div>
+                size_face {{ $single->size_face }}
+            </div>
+            <div>
+                size_gloves {{ $single->size_gloves }}
             </div>
             <div>
                 height {{ $single->height }}
@@ -69,6 +75,6 @@
                 <button class="btn btn-primary">
                     Удалить
                 </button>
-        </form>
+            </form>
     </main>
 @endsection

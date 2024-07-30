@@ -16,8 +16,7 @@ return new class extends Migration {
             $table->string('name_last', 50);
             $table->string('name_middle', 50)->nullable();
             $table->string('certificate_id')->unique();
-            $table->integer('position_id');
-            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Position::class)->constrained();
             $table->timestamp('date_of_birth');
             $table->string('phone');
             $table->string('address_documental');
@@ -25,11 +24,12 @@ return new class extends Migration {
             $table->integer('size_head');
             $table->integer('size_body');
             $table->integer('size_foot');
+            $table->integer('size_face');
+            $table->integer('size_gloves');
             $table->integer('height');
             $table->enum('status', ['active', 'inactive', 'fired',])->default('active');
             $table->string('img');
-            $table->integer('division_id');
-            $table->foreign('division_id')->references('id')->on('divisions')->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Division::class)->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -11,11 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('role_id');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->integer('division_id');
-            $table->foreign('division_id')->references('id')->on('divisions')->onDelete('cascade');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->foreignIdFor(\App\Models\Division::class)->nullable()->constrained();
+            $table->enum('status', ['active', 'inactive', 'banned'])->default('active');
         });
     }
 

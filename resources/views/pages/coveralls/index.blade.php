@@ -15,8 +15,8 @@
 
                 @foreach($all as $single)
                     <div class="">
-                        <a href="{{ route( 'employers.show', $single ) }}">
-                            {{$single->name_first}}
+                        <a href="{{ route( 'coveralls.show', $single ) }}">
+                            {{$single->coverallType->name}} Размер: {{$single->size}}
                         </a>
                     </div>
                 @endforeach

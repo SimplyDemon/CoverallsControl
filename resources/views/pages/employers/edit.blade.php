@@ -101,6 +101,20 @@
                        value="{{old('size_foot',$single->size_foot)}}">
             </div>
             <div class="form-group">
+                <label for="size_face">
+                    Размер лица
+                </label>
+                <input class="form-control" type="number" name="size_face" id="size_face"
+                       value="{{old('size_face',$single->size_face)}}">
+            </div>
+            <div class="form-group">
+                <label for="size_gloves">
+                    Размер перчаток
+                </label>
+                <input class="form-control" type="number" name="size_gloves" id="size_gloves"
+                       value="{{old('size_gloves',$single->size_gloves)}}">
+            </div>
+            <div class="form-group">
                 <label for="height">
                     Высота
                 </label>
@@ -138,6 +152,43 @@
                 <img src="{{asset('storage/' . $single->img)}}" width="100" height="100" alt="img">
                 <input class="form-control" type="file" name="image" id="image" value="">
             </div>
+
+            @if($single->position->coverallTypes)
+                <div>
+                    <h4>Список нужной спецовки</h4>
+                    @foreach($single->position->coverallTypes as $coverallType)
+                        <div>
+                            {{$coverallType->name}} x{{$coverallType->pivot->quantity}}
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+            @if($single->coveralls)
+                <div>
+                    <h4>Список выданной спецовки</h4>
+                    @foreach($single->coveralls as $employerCoverall)
+                        <div>
+                            {{$employerCoverall->coverallType->name}}
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+            @if($employerAvailableCoveralls)
+                <div>
+
+                    <h4>Список доступной спецовки</h4>
+                    @foreach($employerAvailableCoveralls as $employerAvailableCoverall)
+                        <div>
+                            <label>{{$employerAvailableCoverall['coverall']->coverallType->name}}</label>
+                            <input class="form-control" type="number" name="coverall_types_ids[]"
+                                   value="{{$employerAvailableCoverall['coverall']->coverall_type_id}}" min="1">
+                            <label>Количество</label>
+                            <input class="form-control" type="number" name="coverall_counts[]" value="1" min="0"
+                                   max="{{$employerAvailableCoverall['coverallCount']}}">
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
             <button class="btn btn-primary">
                 Сохранить

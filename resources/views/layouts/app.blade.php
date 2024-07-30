@@ -1,3 +1,3 @@
-@include('layouts.template-parts.global.header')
+@include('template-parts.global.header')
 @yield('content')
-@include('layouts.template-parts.global.footer')
+@include('template-parts.global.footer')

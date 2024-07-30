@@ -11,10 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('coverall_employer', function (Blueprint $table) {
-            $table->bigInteger('coverall_id')->unsigned();
-            $table->bigInteger('employer_id')->unsigned();
-            $table->foreign('coverall_id')->references('id')->on('coveralls')->onDelete('cascade');
-            $table->foreign('employer_id')->references('id')->on('employers')->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Coverall::class)->unique()->constrained();
+            $table->foreignIdFor(\App\Models\Employer::class)->constrained();
+            $table->primary(['employer_id', 'coverall_id']);
         });
     }
 

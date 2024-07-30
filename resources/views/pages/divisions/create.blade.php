@@ -23,6 +23,21 @@
                 </label>
                 <input class="form-control" type="text" name="name" id="name" value="{{old('name','')}}">
             </div>
+            <div class="form-group">
+                <label for="coverall_type_id">
+                    Родительское подразделение
+                </label>
+                <select name="division_id" id="division_id">
+                    <option value="">
+                        Родительское подразделение
+                    </option>
+                    @foreach($divisions as $division)
+                        <option value="{{$division->id}}">
+                            {{$division->name}}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
             <button class="btn btn-primary">
                 Добавить

@@ -12,14 +12,13 @@ return new class extends Migration {
     {
         Schema::create('coveralls', function (Blueprint $table) {
             $table->id();
-            $table->integer('coverall_type_id');
-            $table->foreign('coverall_type_id')->references('id')->on('coverall_types')->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\CoverallType::class)->constrained();
+            $table->foreignIdFor(\App\Models\Employer::class)->nullable()->constrained();
+            $table->foreignIdFor(\App\Models\Contract::class)->constrained();
             $table->integer('size');
             $table->enum('status', ['defective', 'issued', 'in_stock', 'returned', 'ready_for_disposal', 'disposed']);
             $table->timestamp('date_issuance')->nullable();
             $table->timestamp('date_replacement')->nullable();
-            $table->integer('contract_id');
-            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
