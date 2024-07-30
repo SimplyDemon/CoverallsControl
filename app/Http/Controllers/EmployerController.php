@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CoverallSave;
 use App\Models\Coverall;
 use App\Models\CoverallType;
 use App\Models\Division;
@@ -198,7 +199,7 @@ class EmployerController extends Controller
 
                 if (!empty($coverallsForAttach)) {
                     $employer->coveralls()->saveMany($coverallsForAttach);
-                    $coverallsForAttach->update([]);
+                    CoverallSave::dispatch($coverallsForAttach);
                 }
             }
 
