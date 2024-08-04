@@ -9,9 +9,9 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index.index');
+Route::post('/', [\App\Http\Controllers\IndexController::class, 'dateFormHandler'])->name('index.date_form_handler');
+Route::get('/create-report', [\App\Http\Controllers\ReportController::class, 'create'])->name('create-report');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

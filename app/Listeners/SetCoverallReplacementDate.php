@@ -19,6 +19,7 @@ class SetCoverallReplacementDate
 
             if (!$coverall->date_issuance && !$coverall->date_replacement && $coverall->employer_id) {
                 $coverall->update([
+                    'status' => 'issued',
                     'date_issuance' => now(),
                     'date_replacement' => now()->addMonths($coverall->coverallType->term_life),
                 ]);

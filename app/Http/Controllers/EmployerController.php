@@ -103,8 +103,23 @@ class EmployerController extends Controller
         $divisions = Division::orderBy('name', 'asc')->get();
         $positions = Position::orderBy('name', 'asc')->get();
         $employerRequiredCoverallTypes = $employer->position->coverallTypes;
-        $coverallsInStock = [];
         $employerAvailableCoveralls = [];
+
+        if ($employer->position->coverallTypes) {
+            $coverallTypesInfo = [];
+            foreach ($employer->position->coverallTypes as $coverallType) {
+                $coveralls = $employer->coveralls->where('coverall_type_id', $coverallType->id)->where('status', 'issued');
+                $coverallsHasCount = $coveralls->where('date_replacement', '>', now())->count();
+                $coverallsOverdueCount = $coveralls->where('date_replacement', '<', now())->count();
+
+                $coverallTypesInfo[] = (object)[
+                    'name' => $coverallType->name,
+                    'quantityNeed' => $coverallType->pivot->quantity,
+                    'quantityHas' => $coverallsHasCount,
+                    'quantityOverdue' => $coverallsOverdueCount,
+                ];
+            }
+        }
 
         if ($employerRequiredCoverallTypes) {
             foreach ($employerRequiredCoverallTypes as $coverallType) {
@@ -141,6 +156,7 @@ class EmployerController extends Controller
             'divisions' => $divisions,
             'positions' => $positions,
             'employerAvailableCoveralls' => $employerAvailableCoveralls,
+            'coverallTypesInfo' => $coverallTypesInfo ?? null,
         ]);
     }
 

@@ -153,12 +153,13 @@
                 <input class="form-control" type="file" name="image" id="image" value="">
             </div>
 
-            @if($single->position->coverallTypes)
+            @if($coverallTypesInfo)
                 <div>
-                    <h4>Список нужной спецовки</h4>
-                    @foreach($single->position->coverallTypes as $coverallType)
+                    <h4>Информация о спецовке</h4>
+                    @foreach($coverallTypesInfo as $coverallType)
                         <div>
-                            {{$coverallType->name}} x{{$coverallType->pivot->quantity}}
+                            {{$coverallType->name}} {{$coverallType->quantityHas}}/{{$coverallType->quantityNeed}}
+                            Просрочено: {{$coverallType->quantityOverdue}}
                         </div>
                     @endforeach
                 </div>
@@ -175,7 +176,6 @@
             @endif
             @if($employerAvailableCoveralls)
                 <div>
-
                     <h4>Список доступной спецовки</h4>
                     @foreach($employerAvailableCoveralls as $employerAvailableCoverall)
                         <div>
