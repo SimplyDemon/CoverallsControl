@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $single->name }}
         </h1>
@@ -18,11 +18,13 @@
         @if($single->coverallTypes)
             <div>
                 <h4>Список нужной спецовки</h4>
-                @foreach($single->coverallTypes as $coverallType)
-                    <div>
-                        {{$coverallType->name}} x{{$coverallType->pivot->quantity}}
-                    </div>
-                @endforeach
+                <ul class="list-group">
+                    @foreach($single->coverallTypes as $coverallType)
+                        <li class="list-group-item">
+                            {{$coverallType->name}} x{{$coverallType->pivot->quantity}}
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -32,7 +34,7 @@
         <form method="POST" action="{{ $formActionDestroy }}">
             @csrf
             @method('DELETE')
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Удалить
             </button>
         </form>

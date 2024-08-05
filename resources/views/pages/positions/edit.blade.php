@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Редактировать' }}
         </h1>
@@ -38,7 +38,7 @@
                 >
                 @if($single->coverallTypes)
                     @foreach($single->coverallTypes as $existedCoverallType)
-                        <div class="sd-js-repeater-source">
+                        <div class="sd-js-repeater-source input-group">
                             <select class="form-control" name="coverall_types_ids[]">
                                 <option value="" selected>
                                     Нет необходимости в спецовке
@@ -86,7 +86,7 @@
                 @endif
             </div>
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Сохранить
             </button>
         </form>

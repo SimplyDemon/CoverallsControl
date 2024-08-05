@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Добавить' }}
         </h1>
@@ -24,7 +24,7 @@
                 <label for="coverall_type_id">
                     Тип спецовки
                 </label>
-                <select name="coverall_type_id" id="coverall_type_id">
+                <select class="form-select" name="coverall_type_id" id="coverall_type_id">
                     @foreach($coverallTypes as $coverallType)
                         <option value="{{$coverallType->id}}">
                             {{$coverallType->name}}
@@ -40,16 +40,10 @@
                        value="{{old('size','')}}">
             </div>
             <div class="form-group">
-                <label for="date_issuance">
-                    Дата выдачи
-                </label>
-                <input type="date" id="date_issuance" name="date_issuance" value="{{old('date_issuance', '')}}">
-            </div>
-            <div class="form-group">
                 <label for="status">
                     Статус
                 </label>
-                <select name="status" id="status">
+                <select class="form-select" name="status" id="status">
                     @foreach($statuses as $statusKey => $statusValue)
                         <option value="{{$statusKey}}">
                             {{$statusValue}}
@@ -61,7 +55,7 @@
                 <label for="contract_id">
                     Контракт
                 </label>
-                <select name="contract_id" id="contract_id">
+                <select class="form-select" name="contract_id" id="contract_id">
                     @foreach($contracts as $contract)
                         <option value="{{$contract->id}}">
                             {{$contract->number}}
@@ -69,7 +63,7 @@
                     @endforeach
                 </select>
             </div>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary  mt-3">
                 Добавить
             </button>
         </form>

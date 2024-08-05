@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         @if(session('error'))
             <div>
                 {{ session('error') }}
@@ -12,69 +12,69 @@
             </div>
         @endif
         <div>
-            name_first {{ $single->name_first }}
+            Имя {{ $single->name_first }}
         </div>
         <div>
-            name_last {{ $single->name_last }}
+            Фамилия {{ $single->name_last }}
         </div>
         <div>
-            name_middle {{ $single->name_middle }}
+            Отчество {{ $single->name_middle }}
         </div>
-            <div>
-                certificate_id {{ $single->certificate_id }}
-            </div>
-            <div>
-                position_id {{ $single->position_id }}
-            </div>
-            <div>
-                date_of_birth {{ $single->date_of_birth }}
-            </div>
-            <div>
-                phone {{ $single->phone }}
-            </div>
-            <div>
-                address_documental {{ $single->address_documental }}
-            </div>
-            <div>
-                address_actual {{ $single->address_actual }}
-            </div>
-            <div>
-                size_head {{ $single->size_head }}
-            </div>
-            <div>
-                size_body {{ $single->size_body }}
-            </div>
-            <div>
-                size_foot {{ $single->size_foot }}
-            </div>
-            <div>
-                size_face {{ $single->size_face }}
-            </div>
-            <div>
-                size_gloves {{ $single->size_gloves }}
-            </div>
-            <div>
-                height {{ $single->height }}
-            </div>
-            <div>
-                status {{ $single->status }}
-            </div>
-            <div>
-                Изображение: <img src="{{asset('storage/' . $single->img)}}" width="100" height="100" alt="img">
-            </div>
-            <div>
-                division_id {{ $single->division_id }}
-            </div>
+        <div>
+            Номер удостоверения {{ $single->certificate_id }}
+        </div>
+        <div>
+            Должность {{ $single->position->name }}
+        </div>
+        <div>
+            Дата рождения {{ $single->date_of_birth }}
+        </div>
+        <div>
+            Телефон {{ $single->phone }}
+        </div>
+        <div>
+            Адрес прописки {{ $single->address_documental }}
+        </div>
+        <div>
+            Адрес проживания {{ $single->address_actual }}
+        </div>
+        <div>
+            Размер головы {{ $single->size_head }}
+        </div>
+        <div>
+            Размер тела {{ $single->size_body }}
+        </div>
+        <div>
+            Размер обуви {{ $single->size_foot }}
+        </div>
+        <div>
+            Размер лица {{ $single->size_face }}
+        </div>
+        <div>
+            Размер перчаток {{ $single->size_gloves }}
+        </div>
+        <div>
+            Высота {{ $single->height }}
+        </div>
+        <div>
+            Статус {{ $single->status }}
+        </div>
+        <div>
+            Изображение: <img src="{{asset('storage/' . $single->img)}}" width="100" height="100" alt="img">
+        </div>
+        <div>
+            Подразделение {{ $single->division->name }}
+        </div>
 
-            <a href="{{$urlEdit}}">
-                Редактировать
-            </a>
-            <form method="POST" action="{{ $formActionDestroy }}">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-primary">
-                    Удалить
-                </button>
-            </form>
+        <a class="btn btn-primary mt-3" href="{{$urlEdit}}">
+            Редактировать
+        </a>
+        <form method="POST" action="{{ $formActionDestroy }}">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-primary  mt-3">
+                Удалить
+            </button>
+        </form>
     </main>
 @endsection

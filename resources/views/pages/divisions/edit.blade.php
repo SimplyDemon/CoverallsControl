@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Редактировать' }}
         </h1>
@@ -29,9 +29,9 @@
                 <label for="coverall_type_id">
                     Родительское подразделение
                 </label>
-                <select name="division_id" id="division_id">
+                <select class="form-select" name="division_id" id="division_id">
                     <option value="">
-                        Родительское подразделение
+                        Нет
                     </option>
                     @foreach($divisions as $division)
                         <option value="{{$division->id}}" {{$division->id === $single->division_id ? 'selected' : ''}}>
@@ -41,7 +41,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Сохранить
             </button>
         </form>

@@ -22,6 +22,12 @@ class Coverall extends Model
         return $this->belongsTo(Employer::class);
     }
 
+    public function contract(): BelongsTo
+    {
+        return $this->belongsTo(Contract::class);
+    }
+
+
     public function getStatusReadableAttribute(): string
     {
         return match ($this->status) {

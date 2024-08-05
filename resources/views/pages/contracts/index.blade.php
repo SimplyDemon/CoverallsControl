@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1 class="">
             {{ $title }}
         </h1>
@@ -11,23 +11,19 @@
         @endif
 
         @if ($all)
-            <section class="">
+            <ul class="list-group">
 
                 @foreach($all as $single)
-                    <div class="">
+                    <li class="list-group-item">
                         <a href="{{ route( 'contracts.show', $single ) }}">
                             {{$single->number}}
                         </a>
-                    </div>
+                    </li>
                 @endforeach
 
-            </section>
+            </ul>
 
-            <section>
-                <div>
-                    <a href="{{ $buttonUrlAddNew }}">Добавить</a>
-                </div>
-            </section>
+            <a class="btn btn-primary mt-3" href="{{ $buttonUrlAddNew }}">Добавить</a>
         @endif
     </main>
 @endsection

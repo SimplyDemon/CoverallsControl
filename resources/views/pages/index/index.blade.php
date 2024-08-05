@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1 class="">
             {{ $title }}
         </h1>
@@ -12,16 +12,18 @@
 
         <h4>Спецовка на состояние {{$dateFormatted}}</h4>
         @if($coverallsInfo)
-            <ul>
+            <ul class="list-group">
                 @foreach($coverallsInfo as $coverallInfo)
-                    <li>
-                        {{$coverallInfo['coverallType']->name}} {{$coverallInfo['quantityHas']}}
-                        /{{$coverallInfo['quantityNeed']}} Необходимо: {{$coverallInfo['quantityLacks']}}
-
+                    <li class="list-group-item">
+                        <p>{{$coverallInfo['coverallType']->name}} <span
+                                class="fw-bold">{{$coverallInfo['quantityHas']}}
+                                /{{$coverallInfo['quantityNeed']}} </span>
+                            Необходимо: {{$coverallInfo['quantityLacks']}}
+                        </p>
                         @if($coverallInfo['sizes'])
-                            <ul>
+                            <ul class="list-group">
                                 @foreach($coverallInfo['sizes'] as $size => $coverallInfoSize)
-                                    <li>
+                                    <li class="list-group-item">
                                         Размер: {{$size}} Необходимо: {{$coverallInfoSize['lacks']}}
                                         Доступно: {{$coverallInfoSize['available']}}
                                     </li>
@@ -33,9 +35,9 @@
             </ul>
         @endif
 
-        <form method="post" action="{{ $formAction }}">
+        <form class="mb-3" method="post" action="{{ $formAction }}">
             @csrf
-            <div class="form-group">
+            <div class="form-group w-50 mb-3">
                 <label for="date">
                     Дата на которую необходимо рассчитать потребность
                 </label>

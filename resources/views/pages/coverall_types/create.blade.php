@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Добавить' }}
         </h1>
@@ -30,7 +30,7 @@
                 <label for="type">
                     Тип
                 </label>
-                <select name="type" id="type">
+                <select class="form-select" name="type" id="type">
                     @foreach($types as $typeKey => $typeValue)
                         <option value="{{$typeKey}}">
                             {{$typeValue}}
@@ -52,7 +52,7 @@
                 <input class="form-control" type="file" name="image" id="image" value="">
             </div>
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Добавить
             </button>
         </form>

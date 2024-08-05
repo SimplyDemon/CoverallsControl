@@ -4,7 +4,7 @@
 
     </script>
 
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Добавить' }}
         </h1>
@@ -39,7 +39,7 @@
                     type="button"
                     value="Добавить ещё вид спецовки"
                 >
-                <div class="sd-js-repeater-source">
+                <div class="sd-js-repeater-source input-group">
                     <select class="form-control" name="coverall_types_ids[]">
                         <option value="" selected>
                             Нет необходимости в спецовке

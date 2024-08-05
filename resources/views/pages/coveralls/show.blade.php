@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         @if(session('error'))
             <div>
                 {{ session('error') }}
@@ -12,31 +12,35 @@
             </div>
         @endif
         <div>
-            coverall_type_id {{ $single->coverall_type_id }}
+            {{ $single->coverallType->name }}
         </div>
         <div>
-            status {{ $single->statusReadable }}
+            Статус {{ $single->statusReadable }}
         </div>
         <div>
-            size {{ $single->size }}
+            Размер {{ $single->size }}
         </div>
+        @if($single->date_issuance)
+            <div>
+                Дата выдачи {{ $single->date_issuance }}
+            </div>
+        @endif
+        @if($single->date_replacement)
+            <div>
+                Дата замены {{ $single->date_replacement }}
+            </div>
+        @endif
         <div>
-            date_issuance {{ $single->date_issuance }}
-        </div>
-        <div>
-            date_replacement {{ $single->date_replacement }}
-        </div>
-        <div>
-            contract_id {{ $single->contract_id }}
+            Контракт <a href="{{route('contracts.show',$single->contract )}}">{{ $single->contract->number }}</a>
         </div>
 
-        <a href="{{$urlEdit}}">
+        <a class="btn btn-primary mt-3" href="{{$urlEdit}}">
             Редактировать
         </a>
         <form method="POST" action="{{ $formActionDestroy }}">
             @csrf
             @method('DELETE')
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Удалить
             </button>
         </form>

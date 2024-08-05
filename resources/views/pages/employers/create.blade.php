@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $title ?? 'Добавить' }}
         </h1>
@@ -53,7 +53,8 @@
                 <label for="date_of_birth">
                     Дата рождения
                 </label>
-                <input type="date" id="date_of_birth" name="date_of_birth" value="{{old('date_of_birth', '')}}">
+                <input class="form-control" type="date" id="date_of_birth" name="date_of_birth"
+                       value="{{old('date_of_birth', '')}}">
             </div>
 
             <div class="form-group">
@@ -122,7 +123,7 @@
                 <label for="division_id">
                     Подразделение
                 </label>
-                <select name="division_id" id="division_id">
+                <select class="form-select" name="division_id" id="division_id">
                     @foreach($divisions as $division)
                         <option value="{{$division->id}}">
                             {{$division->name}}
@@ -134,7 +135,7 @@
                 <label for="position_id">
                     Должность
                 </label>
-                <select name="position_id" id="position_id">
+                <select class="form-select" name="position_id" id="position_id">
                     @foreach($positions as $position)
                         <option value="{{$position->id}}">
                             {{$position->name}}
@@ -149,7 +150,7 @@
                 <input class="form-control" type="file" name="image" id="image" value="">
             </div>
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Добавить
             </button>
         </form>

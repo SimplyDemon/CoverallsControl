@@ -8,6 +8,7 @@ use App\Models\CoverallType;
 use App\Models\Division;
 use App\Models\Employer;
 use App\Models\Position;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -104,6 +105,8 @@ class EmployerController extends Controller
         $positions = Position::orderBy('name', 'asc')->get();
         $employerRequiredCoverallTypes = $employer->position->coverallTypes;
         $employerAvailableCoveralls = [];
+        $dateOfBirthCarbon = new Carbon($employer->date_of_birth);
+        $dateOfBirthForForm = $dateOfBirthCarbon->format('Y-m-d');
 
         if ($employer->position->coverallTypes) {
             $coverallTypesInfo = [];
@@ -157,6 +160,7 @@ class EmployerController extends Controller
             'positions' => $positions,
             'employerAvailableCoveralls' => $employerAvailableCoveralls,
             'coverallTypesInfo' => $coverallTypesInfo ?? null,
+            'dateOfBirthForForm' => $dateOfBirthForForm,
         ]);
     }
 

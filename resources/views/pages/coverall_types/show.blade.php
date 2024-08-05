@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <main class="sd-main">
+    <main class="sd-main container">
         <h1>
             {{ $single->name }}
         </h1>
@@ -31,7 +31,7 @@
         <form method="POST" action="{{ $formActionDestroy }}">
             @csrf
             @method('DELETE')
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mt-3">
                 Удалить
             </button>
         </form>
