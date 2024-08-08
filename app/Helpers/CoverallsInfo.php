@@ -38,18 +38,30 @@ class CoverallsInfo
                 $coverallsInfo[$coverallType->id]['quantityOverdue'] = $quantityOverdue;
                 $coverallsInfo[$coverallType->id]['quantityLacks'] = $quantityNeed - $quantityHas;
 
+
                 if ($coverallSize) {
                     $currentCoverallNeedWithSizeCount = $coverallsInfo[$coverallType->id]['sizes'][$coverallSize]['lacks'] ?? 0;
                     $coverallsInfo[$coverallType->id]['sizes'][$coverallSize]['lacks'] = $currentCoverallPositionNeed - $coverallsHasCount + $currentCoverallNeedWithSizeCount;
 
                     if (!isset($coverallsInfo[$coverallType->id]['sizes'][$coverallSize]['available'])) {
-                        $coverallsInfo[$coverallType->id]['sizes'][$coverallSize]['available'] = Coverall::where([
+                        $availableCount = Coverall::where([
                             ['coverall_type_id', $coverallType->id,],
                             ['status', 'in_stock'],
                             ['employer_id', null],
                             ['size', $coverallSize],
                         ])->count();
+                        $currentQuantityAvailable = $coverallsInfo[$coverallType->id]['quantityAvailable'] ?? 0;
+                        $availableCountForSize = $currentQuantityAvailable + (min($availableCount, $currentCoverallPositionNeed));
+                        $coverallsInfo[$coverallType->id]['quantityAvailable'] = min($availableCountForSize, $coverallsInfo[$coverallType->id]['quantityLacks']);
+                        $coverallsInfo[$coverallType->id]['sizes'][$coverallSize]['available'] = $availableCount;
                     }
+
+                    $coverallsInfo[$coverallType->id]['tooltipInfo'] = match (true) {
+                        $coverallsInfo[$coverallType->id]['quantityLacks'] === 0 => ['text' => 'Выдано всем сотрудникам', 'class' => 'sd-tooltip-green'],
+                        $coverallsInfo[$coverallType->id]['quantityLacks'] <= $coverallsInfo[$coverallType->id]['quantityAvailable'] => ['text' => 'Выдано не всем сотрудникам, но есть на складе', 'class' => 'sd-tooltip-dark-green'],
+                        $coverallsInfo[$coverallType->id]['quantityLacks'] === $coverallsInfo[$coverallType->id]['quantityNeed'] => ['text' => 'Острая не хватка!', 'class' => 'sd-tooltip-red'],
+                        $coverallsInfo[$coverallType->id]['quantityLacks'] > $coverallsInfo[$coverallType->id]['quantityAvailable'] => ['text' => 'Не достаточно спецовки для всех сотрудников', 'class' => 'sd-tooltip-yellow'],
+                    };
                 }
 
                 /* Employer need some coveralls */

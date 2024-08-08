@@ -26,7 +26,7 @@
                     Номер
                 </label>
                 <input class="form-control" type="text" name="number" id="number"
-                       value="{{old('number',$single->number)}}">
+                       value="{{old('number',$single->number)}}" required>
             </div>
 
             <div class="form-group">
@@ -34,18 +34,18 @@
                     Дата заключения
                 </label>
                 <input class="form-control" type="date" id="date_conclusion" name="date_conclusion"
-                       value="{{old('date_conclusion', $single->date_conclusion)}}">
+                       value="{{old('date_conclusion', $single->date_conclusion)}}" required>
             </div>
             <div class="form-group">
                 <label for="date_delivery_documental">
                     Дата доставки документальная
                 </label>
                 <input class="form-control" type="date" id="date_delivery_documental" name="date_delivery_documental"
-                       value="{{old('date_delivery_documental', $single->date_delivery_documental)}}">
+                       value="{{old('date_delivery_documental', $single->date_delivery_documental)}}" required>
             </div>
             <div class="form-group">
                 <label for="date_delivery_actual">
-                    date_delivery_actual
+                    Дата доставки фактическая
                 </label>
                 <input class="form-control" type="date" id="date_delivery_actual" name="date_delivery_actual"
                        value="{{old('date_delivery_actual', $single->date_delivery_actual)}}">
@@ -72,7 +72,7 @@
                 @if($single->coverallTypes)
                     @foreach($single->coverallTypes as $existedCoverallType)
                         <div class="sd-js-repeater-source">
-                            <select class="form-control" name="coverall_types_ids[]">
+                            <select class="form-control" name="coverall_types_ids[]" required>
                                 @foreach($coverallTypes as $coverallType)
                                     <option value="{{$coverallType->id}}"
                                             @if ($coverallType->id === $existedCoverallType->id) selected @endif
@@ -83,10 +83,10 @@
                             </select>
                             Количество
                             <input class="form-control" type="number" name="quantities_planned[]"
-                                   value="{{$existedCoverallType->pivot->quantity_planned}}" min="1">
+                                   value="{{$existedCoverallType->pivot->quantity_planned}}" min="1" required>
                             Размер
                             <input class="form-control" type="number" name="sizes[]"
-                                   value="{{$existedCoverallType->pivot->size}}" min="1">
+                                   value="{{$existedCoverallType->pivot->size}}" min="1" required>
                         </div>
                     @endforeach
 
@@ -103,7 +103,7 @@
                             value="Добавить ещё вид спецовки"
                         >
                         <div class="sd-js-repeater-source">
-                            <select class="form-control" name="coverall_types_ids[]">
+                            <select class="form-control" name="coverall_types_ids[]" required>
                                 @foreach($coverallTypes as $coverallType)
                                     <option value="{{$coverallType->id}}">
                                         {{$coverallType->name}}
@@ -111,9 +111,10 @@
                                 @endforeach
                             </select>
                             Количество
-                            <input class="form-control" type="number" name="quantities_planned[]" value="1" min="1">
+                            <input class="form-control" type="number" name="quantities_planned[]" value="1" min="1"
+                                   required>
                             Размер
-                            <input class="form-control" type="number" name="sizes[]" value="1" min="1">
+                            <input class="form-control" type="number" name="sizes[]" value="1" min="1" required>
                         </div>
                     </div>
                 @endif

@@ -24,7 +24,7 @@
                 <label for="coverall_type_id">
                     Тип спецовки
                 </label>
-                <select class="form-select" name="coverall_type_id" id="coverall_type_id">
+                <select class="form-select" name="coverall_type_id" id="coverall_type_id" required>
                     @foreach($coverallTypes as $coverallType)
                         <option value="{{$coverallType->id}}">
                             {{$coverallType->name}}
@@ -37,13 +37,13 @@
                     Размер
                 </label>
                 <input class="form-control" type="number" name="size" id="size"
-                       value="{{old('size','')}}">
+                       value="{{old('size','')}}" required>
             </div>
             <div class="form-group">
                 <label for="status">
                     Статус
                 </label>
-                <select class="form-select" name="status" id="status">
+                <select class="form-select" name="status" id="status" required>
                     @foreach($statuses as $statusKey => $statusValue)
                         <option value="{{$statusKey}}">
                             {{$statusValue}}
@@ -55,7 +55,7 @@
                 <label for="contract_id">
                     Контракт
                 </label>
-                <select class="form-select" name="contract_id" id="contract_id">
+                <select class="form-select" name="contract_id" id="contract_id" required>
                     @foreach($contracts as $contract)
                         <option value="{{$contract->id}}">
                             {{$contract->number}}

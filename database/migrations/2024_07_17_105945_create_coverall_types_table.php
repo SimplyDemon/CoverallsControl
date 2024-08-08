@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('coverall_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('img');
             $table->enum('type', ['gloves', 'boots', 'helmet', 'robe', 'other']);
             $table->integer('term_life'); // In month

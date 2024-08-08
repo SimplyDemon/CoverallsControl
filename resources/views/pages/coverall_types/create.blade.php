@@ -24,13 +24,13 @@
                 <label for="name">
                     Название
                 </label>
-                <input class="form-control" type="text" name="name" id="name" value="{{old('name','')}}">
+                <input class="form-control" type="text" name="name" id="name" value="{{old('name','')}}" required>
             </div>
             <div class="form-group">
                 <label for="type">
                     Тип
                 </label>
-                <select class="form-select" name="type" id="type">
+                <select class="form-select" name="type" id="type" required>
                     @foreach($types as $typeKey => $typeValue)
                         <option value="{{$typeKey}}">
                             {{$typeValue}}
@@ -43,13 +43,13 @@
                     Срок годности (в месяцах)
                 </label>
                 <input class="form-control" type="number" name="term_life" id="term_life"
-                       value="{{old('term_life','')}}">
+                       value="{{old('term_life','')}}" required>
             </div>
             <div class="form-group">
                 <label for="image">
                     Фото
                 </label>
-                <input class="form-control" type="file" name="image" id="image" value="">
+                <input class="form-control" type="file" name="image" id="image" value="" required>
             </div>
 
             <button class="btn btn-primary mt-3">

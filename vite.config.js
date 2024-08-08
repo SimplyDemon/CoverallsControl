@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/sd-repeater.js',
+                'resources/js/sd-tooltip.js',
             ],
             refresh: true,
         }),

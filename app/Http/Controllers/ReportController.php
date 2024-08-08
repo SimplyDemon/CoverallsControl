@@ -21,12 +21,25 @@ class ReportController extends Controller
             ['№', 'Наименование', 'Размер', 'Количество'],
         ];
 
-
+        foreach ($coverallsData['coverallsInfo'] as $key => $coverallInfo) {
+            foreach ($coverallInfo['sizes'] as $sizeKey => $sizeValue) {
+                $needToOrder = $sizeValue['lacks'] - $sizeValue['available'];
+                if ($needToOrder <= 0) {
+                    unset($coverallsData['coverallsInfo'][$key]['sizes'][$sizeKey]);
+                } else {
+                    $coverallsData['coverallsInfo'][$key]['sizes'][$sizeKey]['needOrder'] = $needToOrder;
+                }
+            }
+        }
         $i = 1;
         foreach ($coverallsData['coverallsInfo'] as $coverallInfo) {
+            if (empty($coverallInfo['sizes'])) {
+                continue;
+            }
             $firstSizeKey = array_key_first($coverallInfo['sizes']);
+            $totalSizeNeedToOrder = $coverallInfo['sizes'][$firstSizeKey]['needOrder'];
             $data[] = [
-                $i++, $coverallInfo['coverallType']->name, $firstSizeKey, $coverallInfo['sizes'][$firstSizeKey]['lacks'],
+                $i++, $coverallInfo['coverallType']->name, $firstSizeKey, $coverallInfo['sizes'][$firstSizeKey]['needOrder'],
             ];
 
             $isFirstRowSkipped = false;
@@ -37,13 +50,14 @@ class ReportController extends Controller
                     $isFirstRowSkipped = true;
                     continue;
                 }
+                $totalSizeNeedToOrder += $sizeData['needOrder'];
                 $data[] = [
-                    '', '', $size, $sizeData['lacks'],
+                    '', '', $size, $sizeData['needOrder'],
                 ];
             }
 
             $data[] = [
-                '', '', '<right><b>итого</b></right>', "<right><b>{$coverallInfo['quantityLacks']}</b></right>",
+                '', '', '<right><b>итого</b></right>', "<right><b>{$totalSizeNeedToOrder}</b></right>",
             ];
 
         }

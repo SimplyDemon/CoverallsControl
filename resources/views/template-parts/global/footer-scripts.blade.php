@@ -6,3 +6,7 @@
     )
     @vite(['resources/js/sd-repeater.js'])
 @endif
+
+@if( Route::is('index.index'))
+    @vite(['resources/js/sd-tooltip.js'])
+@endif
